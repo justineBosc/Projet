@@ -1,7 +1,7 @@
 all: main
 
-main: main.o Individu.o Environnement.o Image.o
-	g++ -g main.o Individu.o Environnement.o Image.o -o main -std=c++11 
+main: main.o Individu.o Environnement.o Image.o Population.o
+	g++ -g main.o Individu.o Environnement.o Image.o Population.o -o main -std=c++11 
 	
 main.o: main.cpp Individu.h
 	g++ -g -c main.cpp -o main.o -std=c++11 
@@ -14,3 +14,6 @@ Environnement.o: Environnement.cpp Environnement.h
 
 Image.o: Image.cpp Image.h
 	g++ -g -c Image.cpp -o Image.o -std=c++11
+
+Population.o : Population.cpp Population.h
+	g++ -g -c Population.cpp -o Population.o -std=c++11
