@@ -17,7 +17,7 @@ class Individu{
 // =========================================================================
   
   Individu();
-  Individu(const Individu& ind);
+  Individu(const Individu& individu);
 
 // =========================================================================
 //                                Destructor
@@ -59,7 +59,8 @@ class Individu{
 //                              Public Methods
 // =========================================================================
 
-  void Mutation(float Pmut);
+  void mutation(float Pmut);
+  void death(float Pdeath);
 
 protected :
 // =========================================================================
