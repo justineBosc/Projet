@@ -11,11 +11,14 @@
 
 
 class Image{
+  
+public:
 // =========================================================================
 //                               Constructors
 // =========================================================================
   
   Image(void);
+  Image(int W, int H, int maxVal);
   Image(std::string file);
   Image(const Image& image);
 
