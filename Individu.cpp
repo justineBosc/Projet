@@ -20,7 +20,18 @@
 	  Cb_=0;
 	  Cc_=0;
 	  w_=0;
-	  vivant_=0;
+	  vivant_=1;
+  }
+  
+  Individu::Individu(const Individu& individu){
+    x_=individu.x_;
+    y_=individu.y_;
+    G_=individu.G_;
+    Ca_=individu.Ca_;
+    Cb_=individu.Cb_;
+    Cc_=individu.Cc_;
+    w_=individu.w_;
+    vivant_=individu.vivant_;
   }
   
 
@@ -35,7 +46,7 @@
 //                               Public Methods
 // ===========================================================================
 
-  void Individu::Mutation(float Pmut){
+  void Individu::mutation(float Pmut){
 	  float r = rand()/(double)RAND_MAX;
 	  if (r < Pmut){
 		  if (get_G()==0) { 
@@ -45,6 +56,13 @@
 			  set_G(0); 
 		  }
 	  }
+  }
+  
+  void Individu::death(float Pdeath){
+    float r = rand()/(double)RAND_MAX;
+    if (r < Pdeath){
+      set_vivant(0);
+    }
   }
 
 // ===========================================================================
