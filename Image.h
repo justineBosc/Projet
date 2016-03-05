@@ -5,9 +5,9 @@
 //                                  Includes
 // ===========================================================================
 
-#include <stdio.h>
-#include <cstdlib>
 #include <iostream>
+#include <fstream>
+#include <cstring>
 
 
 class Image{
@@ -15,21 +15,34 @@ class Image{
 //                               Constructors
 // =========================================================================
   
+  Image(void);
+  Image(std::string file);
+  Image(const Image& image);
 
 // =========================================================================
 //                                Destructor
 // =========================================================================
 
+  ~Image(void);
+
 // =========================================================================
 //                                  Getters
 // =========================================================================
   
+  inline int get_w(void) const;
+  inline int get_h(void) const;
+  inline int get_maxVal(void) const;
+  inline unsigned char get_color(int x, int y, int c);
 
 // =========================================================================
 //                                  Setters
 // =========================================================================
 
-
+  inline void set_w(int w);
+  inline void set_h(int h);
+  inline void set_maxVal(int maxVal);
+  inline void set_color(int x, int y, int c, unsigned char val);
+  
 // =========================================================================
 //                                 Operators
 // =========================================================================
@@ -38,6 +51,7 @@ class Image{
 //                              Public Methods
 // =========================================================================
 
+  void save(std::string file);
 
 protected :
 // =========================================================================
@@ -48,6 +62,10 @@ protected :
 //                                Attributes
 // =========================================================================
 
+  int w_;                   //Image width (pixels)
+  int h_;                   //Image height (pixels)
+  int maxVal_;              //Maximum canal value
+  unsigned char* data_;     //Image data
 
 
 };
@@ -56,9 +74,41 @@ protected :
 //                            Getters' definitions
 // ===========================================================================
  
+ inline int Image::get_w(void) const{
+   return w_;
+ }
+ 
+ inline int Image::get_h(void) const{
+   return h_;
+ }
+ 
+ inline int Image::get_maxVal(void) const{
+   return maxVal_;
+ }
+ 
+ inline unsigned char Image::get_color(int x, int y, int c){
+   return data_[(x*h_+y)*3+c];
+ }
+ 
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
+  
+  inline void Image::set_w(int w){
+    w_=w;
+  }
+  
+  inline void Image::set_h(int h){
+    h_=h;
+  }
+  
+  inline void Image::set_maxVal(int maxVal){
+    maxVal_=maxVal;
+  }
+  
+  inline void Image::set_color(int x, int y, int c, unsigned char val){
+    data_[(x*h_+y)*3+c]=val;
+  }
   
 // ===========================================================================
 //                           Operators' definitions
