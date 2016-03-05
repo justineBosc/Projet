@@ -12,9 +12,8 @@
 //                                Constructors
 // ===========================================================================
 
-  Individu::Individu(){
-	  x_=0;
-	  y_=0;
+  Individu::Individu(void){
+	  position_=0;
 	  G_=0;
 	  Ca_=0;
 	  Cb_=0;
@@ -24,8 +23,7 @@
   }
   
   Individu::Individu(const Individu& individu){
-    x_=individu.x_;
-    y_=individu.y_;
+    position_=individu.position_;
     G_=individu.G_;
     Ca_=individu.Ca_;
     Cb_=individu.Cb_;
@@ -39,7 +37,7 @@
 //                                 Destructor
 // ===========================================================================
 
-  Individu::~Individu(){
+  Individu::~Individu(void){
   }
 
 // ===========================================================================
