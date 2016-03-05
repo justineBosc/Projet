@@ -11,26 +11,26 @@
 
 
 class Individu{
- public :
+
+public :
 // =========================================================================
 //                               Constructors
 // =========================================================================
   
-  Individu();
+  Individu(void);
   Individu(const Individu& individu);
 
 // =========================================================================
 //                                Destructor
 // =========================================================================
 
-  ~Individu();
+  ~Individu(void);
 
 // =========================================================================
 //                                  Getters
 // =========================================================================
   
-  inline int get_x(void) const;
-  inline int get_y(void) const;
+  inline int get_position(void) const;
   inline int get_G(void) const;
   inline float get_Ca(void) const;
   inline float get_Cb(void) const;
@@ -42,8 +42,7 @@ class Individu{
 //                                  Setters
 // =========================================================================
 
-  inline void set_x(int X);
-  inline void set_y(int Y);
+  inline void set_position(int position);
   inline void set_G(int g);
   inline void set_Ca(float A);
   inline void set_Cb(float B);
@@ -71,8 +70,7 @@ protected :
 //                                Attributes
 // =========================================================================
  
-  int x_;
-  int y_;
+  int position_;
   int G_;
   float Ca_;
   float Cb_;
@@ -86,12 +84,8 @@ protected :
 //                            Getters' definitions
 // ===========================================================================
  
-  inline int Individu::get_x(void) const{
-	  return x_;
-  }
-  
-  inline int Individu::get_y(void) const{
-	  return y_;
+  inline int Individu::get_position(void) const{
+	  return position_;
   }
   
   inline int Individu::get_G(void) const{
@@ -122,14 +116,10 @@ protected :
 //                            Setters' definitions
 // ===========================================================================
 
-  inline void Individu::set_x(int X){
-	  x_=X;
+  inline void Individu::set_position(int position){
+	  position_=position;
   }
   
-  inline void Individu::set_y(int Y){
-	  y_=Y;
-  }
-
   inline void Individu::set_G(int g){
 	  G_=g;
   }
