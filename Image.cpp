@@ -19,6 +19,18 @@
     data_=nullptr;
   }
   
+  Image::Image(int W, int H, int maxVal)
+  {
+    w_=W;
+    h_=H;
+    maxVal_=maxVal;
+    data_= new unsigned char[w_*h_*3];
+    for (int i=0; i<w_*h_*3; i++)
+    {
+      data_[i]=0;
+    }
+  }
+  
   Image::Image(std::string file)
   {
     std::ifstream f(file.c_str(), std::ios::in);
