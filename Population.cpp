@@ -23,27 +23,28 @@
     W_=W;
     H_=H;
     Env_ = new Individu[W_*H_];
-    
-    //ALéatoirement position Ga
-    int Position_Individu_Ga[(W_*H_)/2];
-    Position_Individu_Ga[0]=rand()/(double)(RAND_MAX) * (W_*H_);
-    int i=0;
-    while (i<((W_*H_)/2))
-    {
-      for (int j=0; j<i; j++)
-      {
-        do
-        {
-          Position_Individu_Ga[i]=rand()/(double)(RAND_MAX) * (W_*H_);
-        }
-        while(Position_Individu_Ga[i]==Position_Individu_Ga[j]);
-      }
-      i+=1;
+                                                                        //Distributed randomly W*H/2 individuals of genotype GA and W*H/2 individuals of genotype GB 
+    int Position[W_*H_];                                                //Create 2 array of size W*H
+    int Random_Position[W_*H_];
+                                                                        
+    for (int i=0; i<(W_*H_); i++){                                      
+      Position[i]=i;                                                    //Put i in case i : Contains values of 0 to (W*H)-1
+      Random_Position[i]=0;                                             //Put 0 in each case
     }
     
-    for(int i=0; i<((W_*H_)/2); i++)
-    {
-      Env_[Position_Individu_Ga[i]].set_G(1);
+    int r;                                                              //Create a int r who will contain a ramdom number
+    for (int j=0; j<(W_*H_); j++){                                      //Brow Position Array
+      do{
+        r=0;
+        r=rand()/(double)(RAND_MAX) * (W_*H_);
+      }
+      while (Random_Position[r]!=0);                                    //Generate a random number until Random_Position[random_number] egal 0 
+      Random_Position[r]=Position[j];                                   
+    }
+    
+    for(int i=0; i<((W_*H_)/2); i++)                                    //Attribute genotype GA (=set_G(1)) to the (W*H)/2 first (random) positions
+    {                                                                   
+      Env_[Random_Position[i]].set_G(1);
     }
   }
 
@@ -67,17 +68,19 @@
     {
       for(int y=0; y<get_H(); y++)
       {
-        if(Env_[x*y].get_G()==1)
+        if(Env_[x*H_+y].get_G()==1)                                     //Attribute Green pixels to individuals of genotype GA 
         {
           Image_ -> set_color(x, y, 0, 0);
           Image_ -> set_color(x, y, 1, 255);
           Image_ -> set_color(x, y, 2, 0);
+          std::cout<<"position : "<<x*H_+y<<", G=1"<<std::endl;
         }
-        else if(Env_[x*y].get_G()==0)
+        else if(Env_[x*H_+y].get_G()==0)                                //Attribute Red pixels to individuals of genotype GB
         {
           Image_ -> set_color(x, y, 0, 255);
           Image_ -> set_color(x, y, 1, 0);
           Image_ -> set_color(x, y, 2, 0);
+          std::cout<<"position : "<<x*H_+y<<", G=0"<<std::endl;
         }
       }
     }
