@@ -13,25 +13,17 @@
 // ===========================================================================
 
   Individu::Individu(void){
-	  position_=0;
+	  x_=0;
+    y_=0;
 	  G_=0;
 	  Ca_=0;
 	  Cb_=0;
 	  Cc_=0;
 	  w_=0;
 	  vivant_=1;
+    Pdeath_=0;
+    Pmut_=0;
   }
-  
-  Individu::Individu(const Individu& individu){
-    position_=individu.position_;
-    G_=individu.G_;
-    Ca_=individu.Ca_;
-    Cb_=individu.Cb_;
-    Cc_=individu.Cc_;
-    w_=individu.w_;
-    vivant_=individu.vivant_;
-  }
-  
 
 // ===========================================================================
 //                                 Destructor
@@ -44,9 +36,9 @@
 //                               Public Methods
 // ===========================================================================
 
-  void Individu::mutation(float Pmut){
+  void Individu::mutation(void){
 	  float r = rand()/(double)RAND_MAX;
-	  if (r < Pmut){
+	  if (r < get_Pmut()){
 		  if (get_G()==0) { 
 			  set_G(1); 
 		  }
@@ -56,9 +48,9 @@
 	  }
   }
   
-  void Individu::death(float Pdeath){
+  void Individu::death(void){
     float r = rand()/(double)RAND_MAX;
-    if (r < Pdeath){
+    if (r < get_Pdeath()){
       set_vivant(0);
     }
   }
