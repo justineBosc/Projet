@@ -12,9 +12,40 @@
 //                                Constructors
 // ===========================================================================
 
+  Environnement::Environnement(void){
+    W_=0;
+    H_=0;
+    A_=0;
+    B_=0;
+    C_=0;
+    Env_=nullptr;
+    Image_=nullptr;
+  }
+  
+  Environnement::Environnement(int W, int H, float init_A){
+    W_=W;
+    H_=H;
+    A_=init_A;
+    B_=0;
+    C_=0;
+    Env_= new Environnement[W_*H_];
+    
+    for (int i=0; i<(W_*H_); i++){                                      //Initialize each cell with a quantity Ainit of A
+      Env_[i].set_A(init_A);
+    }
+
+    Image_=nullptr;
+  }
+    
+    
 // ===========================================================================
 //                                 Destructor
 // ===========================================================================
+
+  Environnement::~Environnement(void){
+    delete [] Env_;
+    Env_=nullptr;
+  }
 
 // ===========================================================================
 //                               Public Methods
