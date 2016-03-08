@@ -21,7 +21,6 @@ public:
   
   Population(void);
   Population(int W, int H);
-  Population(const Population& population);
 
 // =========================================================================
 //                                Destructor
@@ -51,6 +50,7 @@ public:
 //                              Public Methods
 // =========================================================================
 
+  void kill(void);
   void save_picture(std::string picture_name);
 
 protected :
@@ -64,7 +64,7 @@ protected :
 
   int W_;
   int H_;
-  Individu* Env_;
+  Individu* Pop_;
   Image* Image_;
 
 };
