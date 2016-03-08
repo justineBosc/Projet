@@ -18,7 +18,6 @@ public :
 // =========================================================================
   
   Individu(void);
-  Individu(const Individu& individu);
 
 // =========================================================================
 //                                Destructor
@@ -30,25 +29,31 @@ public :
 //                                  Getters
 // =========================================================================
   
-  inline int get_position(void) const;
+  inline int get_x(void) const;
+  inline int get_y(void) const;
   inline int get_G(void) const;
   inline float get_Ca(void) const;
   inline float get_Cb(void) const;
   inline float get_Cc(void) const;
   inline float get_w(void) const;
   inline bool get_vivant(void) const;
+  inline float get_Pdeath(void) const;
+  inline float get_Pmut(void) const;
 
 // =========================================================================
 //                                  Setters
 // =========================================================================
 
-  inline void set_position(int position);
+  inline void set_x(int x);
+  inline void set_y(int y);
   inline void set_G(int g);
   inline void set_Ca(float A);
   inline void set_Cb(float B);
   inline void set_Cc(float C);
   inline void set_w(float W);
   inline void set_vivant(bool v);
+  inline void set_Pdeath(float Pdeath);
+  inline void set_Pmut(float Pmut);
 
 // =========================================================================
 //                                 Operators
@@ -58,8 +63,8 @@ public :
 //                              Public Methods
 // =========================================================================
 
-  void mutation(float Pmut);
-  void death(float Pdeath);
+  void mutation(void);
+  void death(void);
 
 protected :
 // =========================================================================
@@ -70,13 +75,16 @@ protected :
 //                                Attributes
 // =========================================================================
  
-  int position_;
+  int x_;
+  int y_;
   int G_;
   float Ca_;
   float Cb_;
   float Cc_;
   float w_;
   bool vivant_;
+  float Pdeath_;
+  float Pmut_;
 
 };
 
@@ -84,8 +92,12 @@ protected :
 //                            Getters' definitions
 // ===========================================================================
  
-  inline int Individu::get_position(void) const{
-	  return position_;
+  inline int Individu::get_x(void) const{
+	  return x_;
+  }
+  
+  inline int Individu::get_y(void) const{
+    return y_;
   }
   
   inline int Individu::get_G(void) const{
@@ -111,13 +123,25 @@ protected :
   inline bool Individu::get_vivant(void) const{
 	  return vivant_;
   }
+  
+  inline float Individu::get_Pdeath(void) const{
+    return Pdeath_;
+  }
+  
+  inline float Individu::get_Pmut(void) const{
+    return Pmut_;
+  }
 
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
 
-  inline void Individu::set_position(int position){
-	  position_=position;
+  inline void Individu::set_x(int x){
+	  x_=x;
+  }
+  
+  inline void Individu::set_y(int y){
+    y_=y;
   }
   
   inline void Individu::set_G(int g){
@@ -142,6 +166,14 @@ protected :
   
   inline void Individu::set_vivant(bool v){
 	  vivant_=v;
+  }
+  
+  inline void Individu::set_Pdeath(float Pdeath){
+    Pdeath_=Pdeath;
+  }
+  
+  inline void Individu::set_Pmut(float Pmut){
+    Pmut_=Pmut;
   }
   
 // ===========================================================================
