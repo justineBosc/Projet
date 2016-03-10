@@ -51,6 +51,7 @@ public :
   inline void set_Cb(float B);
   inline void set_Cc(float C);
   inline void set_w(float W);
+  inline void set_w(void);
   inline void set_vivant(bool v);
   inline void set_Pdeath(float Pdeath);
   inline void set_Pmut(float Pmut);
@@ -77,7 +78,7 @@ protected :
  
   int x_;
   int y_;
-  int G_;
+  int G_;             //Ga -> G_=0; Gb -> G_=1
   float Ca_;
   float Cb_;
   float Cc_;
@@ -162,6 +163,15 @@ protected :
   
   inline void Individu::set_w(float W){
 	  w_=W;
+  }
+  
+  inline void Individu::set_w(void){
+    if(G_==0){
+      w_=Cb_;
+    }
+    else if (G_==1){
+      w_=Cc_;
+    }
   }
   
   inline void Individu::set_vivant(bool v){
