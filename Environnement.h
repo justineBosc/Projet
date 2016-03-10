@@ -36,7 +36,6 @@ public:
   inline float get_A(void) const;
   inline float get_B(void) const;
   inline float get_C(void) const;
-  
 
 // =========================================================================
 //                                  Setters
@@ -56,6 +55,7 @@ public:
 //                              Public Methods
 // =========================================================================
 
+  void reset(float init_A);
 
 protected :
 // =========================================================================
