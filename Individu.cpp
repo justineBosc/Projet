@@ -24,6 +24,19 @@
     Pdeath_=0;
     Pmut_=0;
   }
+  
+  Individu::Individu(float Pdeath, float Pmut){
+    x_=0;
+    y_=0;
+    G_=0;
+    Ca_=0;
+    Cb_=0;
+    Cc_=0;
+    w_=0;
+    vivant_=1;
+    Pdeath_=Pdeath;
+    Pmut_=Pmut;
+  }
 
 // ===========================================================================
 //                                 Destructor
