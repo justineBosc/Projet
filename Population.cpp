@@ -54,6 +54,7 @@
       Pop_[i].set_x(i - W_*(int(i/W_)));
       //NE VAS PAS ICI !!!!!!!!!!!!!!!!
       Pop_[i].set_Pdeath(0.05);
+      Pop_[i].set_Pmut(0.1);
     }
     
     Image_=nullptr;
@@ -175,6 +176,14 @@
       
       Pop_[pos].set_w();                                                //Update the fitness
       Pop_[i].set_w();
+    }
+  }
+  
+  
+  void Population::mutation(void)
+  {
+    for(int i=0; i<W_*H_; i++){
+      Pop_[i].mutation();
     }
   }
   
