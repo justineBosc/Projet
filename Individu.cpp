@@ -42,7 +42,7 @@
 		  if (get_G()==0) { 
 			  set_G(1); 
 		  }
-		  if (get_G()==1) {
+		  else if (get_G()==1) {
 			  set_G(0); 
 		  }
 	  }
