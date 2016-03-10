@@ -55,6 +55,7 @@ public:
   void kill(void);
   void divide(void);
   int position_best_fitness(int x, int y);
+  void mutation(void);
   
   void save_picture(std::string picture_name);
 
