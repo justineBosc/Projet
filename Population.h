@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Image.h"
 #include "Individu.h"
+#include "Environnement.h"
 
 
 class Population{
@@ -34,6 +35,7 @@ public:
   
   inline int get_W(void);
   inline int get_H(void);
+  inline float get_fitness(int x, int y);
 
 // =========================================================================
 //                                  Setters
@@ -51,6 +53,9 @@ public:
 // =========================================================================
 
   void kill(void);
+  void divide(void);
+  int position_best_fitness(int x, int y);
+  
   void save_picture(std::string picture_name);
 
 protected :
@@ -79,6 +84,10 @@ protected :
   
   inline int Population::get_H(void){
     return H_;
+  }
+  
+  inline float Population::get_fitness(int x, int y){
+    return Pop_[(y*W_)+x].get_w();                                      //Return the fitness of the position (x,y) individual
   }
 
 // ===========================================================================
