@@ -18,7 +18,7 @@ public:
 //                               Constructors
 // =========================================================================
 
-  Simulation(void);
+  Simulation(int time, int max_T, int max_init_A);
 
 // =========================================================================
 //                                Destructor
@@ -62,9 +62,10 @@ protected :
 
   int time_;            //Simulation time
   int state_;           //State : 0=cohabitation; 1=Exclusion; 2=Extinction
-  Image* Phase_;
-  int* T_;
-  int* Ainit_;
+  int* state_A_T_;      //Array of state
+  Image* Phase_;        
+  int T_;
+  int Ainit_;
      
 
 };
