@@ -18,7 +18,7 @@ public :
 // =========================================================================
   
   Individu(void);
-  Individu(float Pdeath, float Pmut);
+  Individu(float Pdeath, float Pmut, float Wmin);
 
 // =========================================================================
 //                                Destructor
@@ -40,6 +40,7 @@ public :
   inline bool get_vivant(void) const;
   inline float get_Pdeath(void) const;
   inline float get_Pmut(void) const;
+  inline float get_Wmin(void) const;
 
 // =========================================================================
 //                                  Setters
@@ -54,8 +55,10 @@ public :
   inline void set_w(float W);
   inline void set_w(void);
   inline void set_vivant(bool v);
+  
   inline void set_Pdeath(float Pdeath);
   inline void set_Pmut(float Pmut);
+  inline void set_Wmin(float Wmin);
 
 // =========================================================================
 //                                 Operators
@@ -87,6 +90,7 @@ protected :
   bool vivant_;
   float Pdeath_;
   float Pmut_;
+  float Wmin_;
 
 };
 
@@ -133,6 +137,10 @@ protected :
   inline float Individu::get_Pmut(void) const{
     return Pmut_;
   }
+  
+  inline float Individu::get_Wmin(void) const{
+    return Wmin_;
+  }
 
 // ===========================================================================
 //                            Setters' definitions
@@ -168,10 +176,12 @@ protected :
   
   inline void Individu::set_w(void){
     if(G_==0){
-      w_=Cb_;
+      if(Cb_<Wmin_){ w_=0; }
+      else { w_=Cb_; }
     }
     else if (G_==1){
-      w_=Cc_;
+      if(Cc_<Wmin_){ w_=0; }
+      else { w_=Cc_; }
     }
   }
   
@@ -185,6 +195,10 @@ protected :
   
   inline void Individu::set_Pmut(float Pmut){
     Pmut_=Pmut;
+  }
+  
+  inline void Individu::set_Wmin(float Wmin){
+    Wmin_=Wmin;
   }
   
 // ===========================================================================
