@@ -23,9 +23,10 @@
 	  vivant_=1;
     Pdeath_=0;
     Pmut_=0;
+    Wmin_=0;
   }
-  
-  Individu::Individu(float Pdeath, float Pmut){
+
+  Individu::Individu(float Pdeath, float Pmut, float Wmin){
     x_=0;
     y_=0;
     G_=0;
@@ -36,6 +37,7 @@
     vivant_=1;
     Pdeath_=Pdeath;
     Pmut_=Pmut;
+    Wmin_=Wmin;
   }
 
 // ===========================================================================
