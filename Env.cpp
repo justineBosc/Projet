@@ -154,6 +154,8 @@
         }
       }
     }
+    
+    if(max==0){ pos = 3000; }
     return pos;                                                         //return the position of the individual with the best fitness               
   } 
   
@@ -208,20 +210,23 @@
       int x= Random_Gap[i] - W_*(int(Random_Gap[i]/W_));
       pos=position_best_fitness(x, y);
       
-      Pop_[Random_Gap[i]].set_vivant(1);
-      Pop_[pos].set_G(Pop_[Random_Gap[i]].get_G());                     //the 2 daughter cells inherit of the mother's genotype
+      if(pos!=3000){
       
-      Pop_[pos].set_Ca(Pop_[Random_Gap[i]].get_Ca()/2);                 //2 cells inherit half of each mother's interne concentrations
-      Pop_[Random_Gap[i]].set_Ca(Pop_[Random_Gap[i]].get_Ca()/2);
+        Pop_[Random_Gap[i]].set_vivant(1);
+        Pop_[pos].set_G(Pop_[Random_Gap[i]].get_G());                     //the 2 daughter cells inherit of the mother's genotype
       
-      Pop_[pos].set_Cb(Pop_[Random_Gap[i]].get_Cb()/2);
-      Pop_[Random_Gap[i]].set_Cb(Pop_[Random_Gap[i]].get_Cb()/2);
+        Pop_[pos].set_Ca(Pop_[Random_Gap[i]].get_Ca()/2);                 //2 cells inherit half of each mother's interne concentrations
+        Pop_[Random_Gap[i]].set_Ca(Pop_[Random_Gap[i]].get_Ca()/2);
+      
+        Pop_[pos].set_Cb(Pop_[Random_Gap[i]].get_Cb()/2);
+        Pop_[Random_Gap[i]].set_Cb(Pop_[Random_Gap[i]].get_Cb()/2);
     
-      Pop_[pos].set_Cc(Pop_[Random_Gap[i]].get_Cc()/2);
-      Pop_[Random_Gap[i]].set_Cc(Pop_[Random_Gap[i]].get_Cc()/2);
+        Pop_[pos].set_Cc(Pop_[Random_Gap[i]].get_Cc()/2);
+        Pop_[Random_Gap[i]].set_Cc(Pop_[Random_Gap[i]].get_Cc()/2);
       
-      Pop_[pos].set_w();                                                //Update the fitness
-      Pop_[Random_Gap[i]].set_w();
+        Pop_[pos].set_w();                                                //Update the fitness
+        Pop_[Random_Gap[i]].set_w();
+      }
     }
   }
   
@@ -252,15 +257,15 @@
       {
         if(Pop_[i].get_G()==0)
         {
-          Env_[i].set_A(Env_[i].get_A()+h_*(Raa_*(-Env_[i].get_A())));
-          Pop_[i].set_Ca(Pop_[i].get_Ca()+h_*((Env_[i].get_A()*Raa_)-(Pop_[i].get_Ca()*Rab_)));
           Pop_[i].set_Cb(Pop_[i].get_Cb()+h_*(Pop_[i].get_Ca()*Rab_));
+          Pop_[i].set_Ca(Pop_[i].get_Ca()+h_*((Env_[i].get_A()*Raa_)-(Pop_[i].get_Ca()*Rab_)));
+          Env_[i].set_A(Env_[i].get_A()+h_*(Raa_*(-Env_[i].get_A())));
         }
         else if(Pop_[i].get_G()==1)
         {
-          Env_[i].set_B(Env_[i].get_B()+h_*(Rbb_*(-Env_[i].get_B())));
-          Pop_[i].set_Cb(Pop_[i].get_Cb()+h_*((Env_[i].get_B()*Rbb_)-(Pop_[i].get_Cb()*Rbc_)));
           Pop_[i].set_Cc(Pop_[i].get_Cc()+h_*(Pop_[i].get_Cb()+Rbc_));
+          Pop_[i].set_Cb(Pop_[i].get_Cb()+h_*((Env_[i].get_B()*Rbb_)-(Pop_[i].get_Cb()*Rbc_)));
+          Env_[i].set_B(Env_[i].get_B()+h_*(Rbb_*(-Env_[i].get_B())));
         }
         Pop_[i].set_w();                                                //Update the fitness
       }
@@ -357,7 +362,6 @@
         }*/
       }
     }
-    std::cout<<i<<std::endl;  
     Image_ -> save(picture_name);
     delete Image_;
     Image_ = nullptr;
