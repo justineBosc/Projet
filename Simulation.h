@@ -8,7 +8,11 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include "Image.h"
+#include "Env.h"
+#include "Individu.h"
+
 
 
 class Simulation{
@@ -31,14 +35,12 @@ public:
 // =========================================================================
 
   inline int get_time(void) const;
-  inline int get_state(void) const;
 
 // =========================================================================
 //                                  Setters
 // =========================================================================
 
   inline void set_time(int time);
-  inline void set_state(int state);
 
 // =========================================================================
 //                                 Operators
@@ -48,6 +50,8 @@ public:
 //                              Public Methods
 // =========================================================================
 
+  void run(void);
+  void save_picture(std::string picture_name);
 
 protected :
 // =========================================================================
@@ -61,8 +65,7 @@ protected :
 //==========================================================================
 
   int time_;            //Simulation time
-  int state_;           //State : 0=cohabitation; 1=Exclusion; 2=Extinction
-  int* state_A_T_;      //Array of state
+  int* state_;          //State's Array : 0=cohabitation; 1=Exclusion; 2=Extinction
   Image* Phase_;        
   int T_;
   int Ainit_;
@@ -77,10 +80,6 @@ protected :
   inline int Simulation::get_time(void) const{
     return time_;
   }
-  
-  inline int Simulation::get_state(void) const{
-    return state_;
-  }
  
 // ===========================================================================
 //                            Setters' definitions
@@ -88,10 +87,6 @@ protected :
 
   inline void Simulation::set_time(int time){
     time_=time;
-  }
-  
-  inline void Simulation::set_state(int state){
-    state_=state;
   }
 
 // ===========================================================================
