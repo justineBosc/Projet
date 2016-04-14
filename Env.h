@@ -21,7 +21,7 @@ public:
 // =========================================================================
 
   Environnement(void);
-  Environnement(int W, int H, float init_A, float D, float h, float Raa, float Rab, float Rbb, float Rbc);
+  Environnement(int W, int H, float init_A, float D, float h, float Raa, float Rab, float Rbb, float Rbc, float Wmin, float Pmut, float Pdeath);
 
 // =========================================================================
 //                                Destructor
@@ -73,6 +73,9 @@ public:
   void metabolism(void);
   void diffusion(void);
   
+  int counter_Ga(void);
+  int counter_Gb(void);
+  
   void save_picture(std::string picture_name);
 
 protected :
@@ -94,6 +97,10 @@ protected :
   float Rab_;
   float Rbb_;
   float Rbc_;
+  
+  float Wmin_;
+  float Pmut_;
+  float Pdeath_;
   
   Individu* Pop_;
   Cell* Env_;
