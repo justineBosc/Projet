@@ -23,12 +23,16 @@
     Rbb_=0;
     Rbc_=0;
     
+    Wmin_=0;
+    Pmut_=0;
+    Pdeath_=0;
+    
     Env_=nullptr;
     Pop_=nullptr;
     Image_=nullptr;
   }
   
-  Environnement::Environnement(int W, int H, float init_A, float D, float h, float Raa, float Rab, float Rbb, float Rbc)
+  Environnement::Environnement(int W, int H, float init_A, float D, float h, float Raa, float Rab, float Rbb, float Rbc, float Wmin, float Pmut, float Pdeath)
   {
     W_=W;
     H_=H;
@@ -40,6 +44,10 @@
     Rab_=Rab;
     Rbb_=Rbb;
     Rbc_=Rbc;
+    
+    Wmin_=Wmin;
+    Pmut_=Pmut;
+    Pdeath_=Pdeath;
     
    //============================= Env =======================================
     Env_= new Cell[W_*H_];
@@ -82,9 +90,6 @@
     {                                                                   //And change it
       Pop_[i].set_y(int(i/W_));                                         
       Pop_[i].set_x(i - W_*(int(i/W_)));
-      //NE VAS PAS ICI !!!!!!!!!!!!!!!!
-      Pop_[i].set_Pdeath(0.02);
-      Pop_[i].set_Pmut(0.0);
     }
 
     Image_=nullptr;
@@ -111,10 +116,9 @@
   {
     for(int i=0; i<W_*H_; i++)
     {
-      Pop_[i].death();
+      Pop_[i].death(Pdeath_);
       
-      if(Pop_[i].get_vivant()==0){                                      
-        Pop_[i].set_w(0);
+      if(Pop_[i].get_vivant()==0){  
         
         Env_[i].set_A(Env_[i].get_A()+Pop_[i].get_Ca());
         Pop_[i].set_Ca(0);
@@ -124,6 +128,8 @@
         
         Env_[i].set_C(Env_[i].get_C()+Pop_[i].get_Cc());
         Pop_[i].set_Cc(0);
+        
+        Pop_[i].set_w();
       }
     }
   }
@@ -213,19 +219,20 @@
       if(pos!=3000){
       
         Pop_[Random_Gap[i]].set_vivant(1);
-        Pop_[pos].set_G(Pop_[Random_Gap[i]].get_G());                     //the 2 daughter cells inherit of the mother's genotype
+        
+        Pop_[Random_Gap[i]].set_G(Pop_[pos].get_G());                   //the 2 daughter cells inherit of the mother's genotype
       
-        Pop_[pos].set_Ca(Pop_[Random_Gap[i]].get_Ca()/2);                 //2 cells inherit half of each mother's interne concentrations
-        Pop_[Random_Gap[i]].set_Ca(Pop_[Random_Gap[i]].get_Ca()/2);
+        Pop_[Random_Gap[i]].set_Ca(Pop_[pos].get_Ca()/2);
+        Pop_[pos].set_Ca(Pop_[pos].get_Ca()/2);                         //2 cells inherit half of each mother's interne concentrations
       
-        Pop_[pos].set_Cb(Pop_[Random_Gap[i]].get_Cb()/2);
-        Pop_[Random_Gap[i]].set_Cb(Pop_[Random_Gap[i]].get_Cb()/2);
+        Pop_[Random_Gap[i]].set_Cb(Pop_[pos].get_Cb()/2);
+        Pop_[pos].set_Cb(Pop_[pos].get_Cb()/2);
     
-        Pop_[pos].set_Cc(Pop_[Random_Gap[i]].get_Cc()/2);
-        Pop_[Random_Gap[i]].set_Cc(Pop_[Random_Gap[i]].get_Cc()/2);
+        Pop_[Random_Gap[i]].set_Cc(Pop_[pos].get_Cc()/2);
+        Pop_[pos].set_Cc(Pop_[pos].get_Cc()/2);
       
-        Pop_[pos].set_w();                                                //Update the fitness
-        Pop_[Random_Gap[i]].set_w();
+        Pop_[pos].set_w(Wmin_);                                         //Update the fitness
+        Pop_[Random_Gap[i]].set_w(Wmin_);
       }
     }
   }
@@ -234,7 +241,7 @@
   void Environnement::mutation(void)
   {
     for(int i=0; i<W_*H_; i++){
-      Pop_[i].mutation();
+      Pop_[i].mutation(Pmut_);
     }
   }
   
@@ -255,21 +262,20 @@
     {
       for(int i=0; i<W_*H_; i++)
       {
-        if(Pop_[i].get_G()==0)
+        if (Pop_[i].get_vivant()==1  && Pop_[i].get_G()==0)
         {
           Pop_[i].set_Cb(Pop_[i].get_Cb()+h_*(Pop_[i].get_Ca()*Rab_));
           Pop_[i].set_Ca(Pop_[i].get_Ca()+h_*((Env_[i].get_A()*Raa_)-(Pop_[i].get_Ca()*Rab_)));
           Env_[i].set_A(Env_[i].get_A()+h_*(Raa_*(-Env_[i].get_A())));
         }
-        else if(Pop_[i].get_G()==1)
+        else if(Pop_[i].get_vivant()==1 && Pop_[i].get_G()==1)
         {
-          Pop_[i].set_Cc(Pop_[i].get_Cc()+h_*(Pop_[i].get_Cb()+Rbc_));
+          Pop_[i].set_Cc(Pop_[i].get_Cc()+h_*(Pop_[i].get_Cb()*Rbc_));
           Pop_[i].set_Cb(Pop_[i].get_Cb()+h_*((Env_[i].get_B()*Rbb_)-(Pop_[i].get_Cb()*Rbc_)));
           Env_[i].set_B(Env_[i].get_B()+h_*(Rbb_*(-Env_[i].get_B())));
         }
-        Pop_[i].set_w();                                                //Update the fitness
+        Pop_[i].set_w(Wmin_);                                           //Update the fitness
       }
-      j+=1;
     }
   }
   
@@ -310,9 +316,10 @@
             else if(y+j>=H_) { J=0;}
             else { J=y+j; }
             
-            Env_T_[(y*W_)+x].set_A(Env_T_[(y*W_)+x].get_A()+D_*Env_[((J)*W_)+(I)].get_A());
-            Env_T_[(y*W_)+x].set_B(Env_T_[(y*W_)+x].get_B()+D_*Env_[((J)*W_)+(I)].get_B());
-            Env_T_[(y*W_)+x].set_C(Env_T_[(y*W_)+x].get_C()+D_*Env_[((J)*W_)+(I)].get_C());
+            Env_T_[(y*W_)+x].set_A(Env_T_[(y*W_)+x].get_A()+D_*Env_[((J)*W_)+I].get_A());
+            Env_T_[(y*W_)+x].set_B(Env_T_[(y*W_)+x].get_B()+D_*Env_[((J)*W_)+I].get_B());
+            Env_T_[(y*W_)+x].set_C(Env_T_[(y*W_)+x].get_C()+D_*Env_[((J)*W_)+I].get_C());
+            
           }
         }
         
@@ -333,6 +340,31 @@
   }
   
   
+  int Environnement::counter_Ga(void)
+  {
+    int cptrA=0;
+    for(int i=0; i<W_*H_; i++)
+    {
+      if(Pop_[i].get_vivant()==1 && Pop_[i].get_G()==0){
+        cptrA+=1;
+      }
+    }
+    return cptrA;
+  }
+  
+  int Environnement::counter_Gb(void)
+  {
+    int cptrB=0;
+    for(int i=0; i<W_*H_; i++)
+    {
+      if(Pop_[i].get_vivant()==1 && Pop_[i].get_G()==1){
+        cptrB+=1;
+      }
+    }
+    return cptrB;
+  }
+  
+  
   void Environnement::save_picture(std::string picture_name)
   {
     int i=0;
@@ -348,18 +380,18 @@
           Image_ -> set_color(x, y, 1, 255);
           Image_ -> set_color(x, y, 2, 255);
         }
-        else if(Pop_[x*H_+y].get_vivant()==1)                                     
+        else if(Pop_[x*H_+y].get_vivant()==1 & Pop_[x*H_+y].get_G()==0)                                     
         {
           Image_ -> set_color(x, y, 0, 255);
           Image_ -> set_color(x, y, 1, 0);
           Image_ -> set_color(x, y, 2, 0);
         }
-        /*else if(Env_[x*H_+y].get_A()>0)                                  
+        else if(Pop_[x*H_+y].get_vivant()==1 & Pop_[x*H_+y].get_G()==1)                                  
         {
           Image_ -> set_color(x, y, 0, 0);
           Image_ -> set_color(x, y, 1, 255);
           Image_ -> set_color(x, y, 2, 0);
-        }*/
+        }
       }
     }
     Image_ -> save(picture_name);
